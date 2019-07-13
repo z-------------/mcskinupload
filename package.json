@@ -4,6 +4,10 @@
   "main": "mcskinupload.js",
   "author": "Zack Guard <zacharyguard@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "mcskinupload": "mcskinupload.js"
+  },
+  "preferGlobal": true,
   "dependencies": {
     "mime-types": "^2.1.24",
     "needle": "^2.4.0",

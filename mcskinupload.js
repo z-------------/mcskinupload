@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require("fs");
 const mime = require("mime-types");
 const needle = require("needle");
@@ -14,31 +16,9 @@ const args = require("yargs")
     .default("model", "classic")
   .argv;
 
-/* consts */
-
-const SKINS_DIRNAME = "skins";
-
 /* determine skin filename */
 
-let filenames;
-try {
-  filenames = fs.readdirSync(SKINS_DIRNAME);
-} catch (exp) {
-  console.error("Could not access skins directory.");
-  process.exit(1);
-}
-let skinFilename;
-for (let filename of filenames) {
-  if (filename === args.skin || path.parse(filename).name === args.skin) {
-    skinFilename = filename;
-    break;
-  }
-}
-if (!skinFilename) {
-  console.error("Skin file not found.");
-  process.exit(1);
-}
-const skinFilenameAbs = path.resolve(path.join(SKINS_DIRNAME, skinFilename));
+const skinFilenameAbs = path.resolve(process.cwd(), args.skin);
 
 /* upload file and navigate to web skins settings */
 
@@ -46,7 +26,7 @@ const data = {
   model: args.model,
   file: {
     file: skinFilenameAbs,
-    content_type: mime.lookup(skinFilename)
+    content_type: mime.lookup(skinFilenameAbs)
   }
 };
 
