@@ -1,0 +1,13 @@
+{
+  "name": "mcskinupload",
+  "version": "0.0.0",
+  "main": "mcskinupload.js",
+  "author": "Zack Guard <zacharyguard@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "mime-types": "^2.1.24",
+    "needle": "^2.4.0",
+    "open": "^6.4.0",
+    "yargs": "^13.2.4"
+  }
+}
