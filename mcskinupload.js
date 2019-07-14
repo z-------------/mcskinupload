@@ -20,12 +20,27 @@ const args = require("yargs")
 
 const skinFilenameAbs = path.resolve(process.cwd(), args.skin);
 
-/* upload file and navigate to web skins settings */
+/* read file */
+
+let fileBuffer;
+try {
+  fileBuffer = fs.readFileSync(skinFilenameAbs);
+} catch (err) {
+  if (err.code === "ENOENT") {
+    console.error(`File "${args.skin}" not found.`);
+  } else {
+    console.error(exp);
+  }
+  process.exit(1);
+}
+
+/* upload file and navigate */
 
 const data = {
   model: args.model,
   file: {
-    file: skinFilenameAbs,
+    buffer: fileBuffer,
+    filename: args.skin,
     content_type: mime.lookup(skinFilenameAbs)
   }
 };
@@ -33,7 +48,7 @@ const data = {
 needle.post(`https://file.io/?expires=1`, data, { multipart: true }, (err, res, body) => {
   if (err || Math.floor(res.statusCode / 100) !== 2 || !body.success) {
     if (err) console.error(err);
-    else if (body) console.error(JSON.parse(body));
+    else if (body) console.error(body);
     else console.error(`Something went wrong. (HTTP ${res.statusCode})`);
     process.exit(1);
   }
